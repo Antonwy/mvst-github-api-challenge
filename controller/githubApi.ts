@@ -1,5 +1,6 @@
 import axios from 'axios';
 import _ from 'lodash';
+import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
 import { Repository, RepositorySearchResponse } from '../models/repository';
 
@@ -15,15 +16,15 @@ export enum GithubRepositorySearchState {
 interface UseGithubSearchReturnInterface {
   state: GithubRepositorySearchState;
   repositories: Repository[];
-  setSearch: Dispatch<SetStateAction<string>>;
 }
 
 export const useGithubSearch = (): UseGithubSearchReturnInterface => {
-  const [search, setSearch] = useState('');
+  const router = useRouter();
   const [state, setState] = useState(GithubRepositorySearchState.idle);
   const [repositories, setRepositories] = useState<Repository[]>([]);
 
-  console.log(`search: ${search}`);
+  const search: string =
+    (Array.isArray(router.query.q) ? router.query.q[0] : router.query.q) || '';
 
   const searchRepositories = async (query: string): Promise<void> => {
     try {
@@ -42,7 +43,7 @@ export const useGithubSearch = (): UseGithubSearchReturnInterface => {
   };
 
   const debouncedRepos = useMemo(() => {
-    return _.debounce(searchRepositories, 250);
+    return _.debounce(searchRepositories, 500);
   }, []);
 
   useEffect(() => {
@@ -54,6 +55,5 @@ export const useGithubSearch = (): UseGithubSearchReturnInterface => {
   return {
     state,
     repositories,
-    setSearch,
   };
 };

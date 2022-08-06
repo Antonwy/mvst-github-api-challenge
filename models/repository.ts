@@ -42,7 +42,7 @@ export interface Repository {
   homepage: null | string;
   hooks_url: string;
   html_url: string;
-  id: number;
+  id: string;
   is_template: boolean;
   issue_comment_url: string;
   issue_events_url: string;

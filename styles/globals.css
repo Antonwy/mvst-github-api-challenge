@@ -28,6 +28,10 @@ a {
   background-clip: padding-box;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

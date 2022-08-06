@@ -1,18 +1,10 @@
-import {
-  Avatar,
-  Button,
-  Card,
-  Container,
-  Link,
-  Row,
-  Spacer,
-  Text,
-} from '@nextui-org/react';
 import { FC } from 'react';
-import { toast } from 'react-toastify';
 import { Repository } from '../models/repository';
 import 'react-toastify/dist/ReactToastify.css';
 import Masonry from 'react-masonry-css';
+import { SearchResultsListItem } from './SearchResultsListItem';
+import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
+import { useRouter } from 'next/router';
 
 interface SearchResultsListProps {
   repositories: Repository[];
@@ -20,10 +12,10 @@ interface SearchResultsListProps {
 
 const breakpointColumnsObj = {
   default: 4,
+  1400: 3,
   1300: 3,
-  1000: 2,
-  700: 2,
-  600: 1,
+  1050: 2,
+  700: 1,
 };
 
 export const SearchResultsList: FC<SearchResultsListProps> = ({
@@ -31,91 +23,21 @@ export const SearchResultsList: FC<SearchResultsListProps> = ({
 }) => {
   return (
     <>
-      <Masonry
-        breakpointCols={breakpointColumnsObj}
-        className="my-masonry-grid"
-        columnClassName="my-masonry-grid_column"
-      >
-        {repositories.slice(0, 10).map((repo) => (
-          <SearchResultsListItem key={repo.id} repository={repo} />
-        ))}
-      </Masonry>
-      {/* <Grid.Container gap={2} alignItems="center" justify="center">
-        {repositories.slice(0, 10).map((repo) => (
-          <Grid key={repo.id} xs={12} md={4} xl={3}>
-            <SearchResultsListItem repository={repo} />
-          </Grid>
-        ))}
-      </Grid.Container> */}
-    </>
-  );
-};
-
-interface SearchResultsListItemProps {
-  repository: Repository;
-}
-
-export const SearchResultsListItem: FC<SearchResultsListItemProps> = ({
-  repository,
-}) => {
-  const copyToClipboard = () => {
-    toast.success('Copied to clipboard!');
-  };
-
-  return (
-    <>
-      <Card variant="bordered" css={{ p: 18, mb: 15 }}>
-        <Card.Header css={{ padding: 0 }}>
-          <Avatar
-            src={repository.owner.avatar_url}
-            squared
-            alt="Github Repository owner image"
-          />
-          <Container>
-            <Text h4>{repository.name}</Text>
-            <Text small css={{ color: '$gray700' }}>
-              {repository.owner.login}
-            </Text>
-          </Container>
-        </Card.Header>
-
-        <Card.Body css={{ p: '18px 0px' }}>
-          <Container css={{ p: 0 }}>
-            <Text color="$gray900" size={14}>
-              {repository.description}
-            </Text>
-
-            {repository.topics && <Spacer y={0.5} />}
-
-            <Row wrap="nowrap">
-              {repository.topics.slice(0, 5).map((topic) => (
-                <Card
-                  variant="flat"
-                  css={{
-                    padding: '$2',
-                    mr: 4,
-                    borderRadius: 4,
-                    width: 'auto',
-                  }}
-                  key={topic}
-                >
-                  <Text size={12}>{topic}</Text>
-                </Card>
-              ))}
-            </Row>
-          </Container>
-        </Card.Body>
-
-        <Card.Footer css={{ p: 0 }}>
-          <Button onPress={copyToClipboard} auto>
-            Clone
-          </Button>
-          <Spacer />
-          <Link icon color="primary" target="_blank" href={repository.html_url}>
-            Visit source code on GitHub.
-          </Link>
-        </Card.Footer>
-      </Card>
+      <AnimateSharedLayout>
+        {repositories.length > 1 ? (
+          <Masonry
+            breakpointCols={breakpointColumnsObj}
+            className="my-masonry-grid"
+            columnClassName="my-masonry-grid_column"
+          >
+            {repositories.map((repo) => (
+              <SearchResultsListItem key={repo.id} repository={repo} />
+            ))}
+          </Masonry>
+        ) : repositories.length === 1 ? (
+          <SearchResultsListItem repository={repositories[0]} />
+        ) : null}
+      </AnimateSharedLayout>
     </>
   );
 };

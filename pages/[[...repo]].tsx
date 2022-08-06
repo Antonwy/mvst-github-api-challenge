@@ -1,18 +1,19 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { Text, Container, Spacer, FormElement } from '@nextui-org/react';
+import { Text, Container, Spacer } from '@nextui-org/react';
 import { SearchInput } from '../components/SearchInput';
 import { useGithubSearch } from '../controller/githubApi';
-import { ChangeEvent } from 'react';
 import { SearchResultsList } from '../components/SearchResultsList';
 import { ToastContainer } from 'react-toastify';
+import { useRouter } from 'next/router';
 
 const Home: NextPage = () => {
-  const { state, repositories, setSearch } = useGithubSearch();
+  const router = useRouter();
+  const { state, repositories } = useGithubSearch();
 
-  const handleSearchChange = (event: ChangeEvent<FormElement>) => {
-    setSearch(event.target.value);
-  };
+  const { repo } = router.query;
+
+  const showRepository = repo ? true : false;
 
   return (
     <>
@@ -43,11 +44,7 @@ const Home: NextPage = () => {
         </Text>
         <Text h1>Github Challenge</Text>
         <Spacer />
-        <SearchInput
-          searchState={state}
-          onChange={handleSearchChange}
-          placeholder="Search repositories"
-        />
+        <SearchInput searchState={state} placeholder="Search repositories" />
         <Spacer />
         <SearchResultsList repositories={repositories} />
       </Container>
