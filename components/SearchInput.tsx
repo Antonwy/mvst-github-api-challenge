@@ -1,16 +1,19 @@
 import {
+  Button,
   Container,
   FormElement,
   Input,
   Loading,
+  Row,
   Spacer,
   useTheme,
 } from '@nextui-org/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useRouter } from 'next/router';
-import { ChangeEvent, FC, useEffect, useState } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 import { CloseSquare } from 'react-iconly';
-import { GithubRepositorySearchState } from '../controller/githubApi';
+import { GithubAPIState } from '../hooks/githubApi';
+import { languages } from '../models/languages';
+import { Select } from './Select';
 
 interface SearchInputProps {
   /**
@@ -30,92 +33,108 @@ interface SearchInputProps {
    */
   placeholder: string;
   /**
+   * onChange handler
+   */
+  onChange?: (event: ChangeEvent<FormElement>) => void;
+  /**
+   * clear search handler
+   */
+  clearSearch?: VoidFunction;
+  /**
    * search state
    */
-  searchState: GithubRepositorySearchState;
+  searchState: GithubAPIState;
+  /**
+   * initial query
+   */
+  initialQuery?: string;
 }
 
 export const SearchInput: FC<SearchInputProps> = ({
   color = 'primary',
   size = 'md',
   placeholder,
-  searchState = GithubRepositorySearchState.idle,
+  searchState = GithubAPIState.idle,
+  onChange,
+  clearSearch,
+  initialQuery,
 }) => {
-  const router = useRouter();
+  const [query, setQuery] = useState(initialQuery ?? '');
   const { theme } = useTheme();
 
-  const searchValue = router.query.q || '';
-
   const handleSearchChange = (event: ChangeEvent<FormElement>) => {
-    if (event.target.value) router.push('/?q=' + event.target.value);
-    else clearSearch();
+    setQuery(event.target.value);
+    if (onChange) onChange(event);
   };
 
-  const clearSearch = () => {
-    router.push('/');
+  const clearSearchHandler = () => {
+    setQuery('');
+    if (clearSearch) clearSearch();
   };
 
-  const loading = searchState == GithubRepositorySearchState.loading;
-
-  console.log();
+  const loading = searchState == GithubAPIState.loading;
 
   return (
-    <Input
-      value={router.query.q ?? ''}
-      css={{ width: '300px' }}
-      size={size}
-      color={color}
-      bordered
-      placeholder={placeholder}
-      onChange={handleSearchChange}
-      contentRightStyling={false}
-      contentRight={
-        <Container
-          alignItems="center"
-          justify="center"
-          display="flex"
-          direction="row"
-          wrap="nowrap"
-          css={{ m: 0, p: 0 }}
-        >
-          <motion.div
-            layout
-            onClick={clearSearch}
-            className="clickable"
-            style={{ marginRight: 8, height: 20 }}
-            whileHover={{ scale: 1.1 }}
-            animate={{
-              opacity: searchValue ? 1 : 0,
-              scale: searchValue ? 1 : 0.8,
-              pointerEvents: searchValue ? 'all' : 'none',
-            }}
+    <>
+      <Input
+        value={query}
+        area-label={placeholder}
+        aria-labelledby={placeholder}
+        css={{ width: '300px' }}
+        size={size}
+        color={color}
+        bordered
+        placeholder={placeholder}
+        onChange={handleSearchChange}
+        contentRightStyling={false}
+        contentRight={
+          <Container
+            alignItems="center"
+            justify="center"
+            display="flex"
+            direction="row"
+            wrap="nowrap"
+            css={{ m: 0, p: 0, overflow: 'clip' }}
           >
-            <CloseSquare
-              set="bold"
-              size={20}
-              primaryColor={theme!.colors.gray600.value}
-            />
-          </motion.div>
-          <AnimatePresence>
-            {loading && (
-              <motion.div
-                key="loading"
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                initial={{ opacity: 0, width: 0, marginRight: 0, scale: 0.0 }}
-                animate={{ opacity: 1, width: 15, marginRight: 8, scale: 1 }}
-                exit={{ opacity: 0, width: 0, marginRight: 0, scale: 0.0 }}
-              >
-                <Loading size="xs" />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </Container>
-      }
-    />
+            <motion.div
+              layout
+              onClick={clearSearchHandler}
+              className="clickable"
+              style={{ marginRight: 8, height: 20 }}
+              whileHover={{ scale: 1.1 }}
+              animate={{
+                opacity: query ? 1 : 0,
+                scale: query ? 1 : 0.8,
+                pointerEvents: query ? 'all' : 'none',
+              }}
+            >
+              <CloseSquare
+                set="bold"
+                size={20}
+                primaryColor={theme!.colors.gray600.value}
+              />
+            </motion.div>
+            <AnimatePresence>
+              {loading && (
+                <motion.div
+                  key="loading"
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                  initial={{ opacity: 0, width: 0, marginRight: 0, scale: 0.0 }}
+                  animate={{ opacity: 1, width: 15, marginRight: 8, scale: 1 }}
+                  exit={{ opacity: 0, width: 0, marginRight: 0, scale: 0.0 }}
+                >
+                  <Loading size="xs" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </Container>
+        }
+      />
+    </>
   );
 };
 function useHistory() {

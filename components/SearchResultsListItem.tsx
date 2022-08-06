@@ -11,7 +11,7 @@ import {
 } from '@nextui-org/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/router';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { Star, Swap } from 'react-iconly';
 import { toast } from 'react-toastify';
 import { Repository } from '../models/repository';
@@ -20,15 +20,20 @@ import { Tag } from './Tag';
 
 interface SearchResultsListItemProps {
   repository: Repository;
+  selectRepo: (repo: string | null) => void;
+  selectedRepo: string | null;
 }
 
 export const SearchResultsListItem: FC<SearchResultsListItemProps> = ({
   repository,
+  selectRepo,
+  selectedRepo,
 }) => {
-  const router = useRouter();
   const { theme } = useTheme();
-  const { repo } = router.query;
-  const showRepository = repo ? repo[0] === repository.node_id : false;
+
+  const showRepository = selectedRepo
+    ? selectedRepo === repository.node_id
+    : false;
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(repository.clone_url);
@@ -37,15 +42,9 @@ export const SearchResultsListItem: FC<SearchResultsListItemProps> = ({
 
   const onRepoClicked = () => {
     if (showRepository) {
-      router.push(router.query.q ? `/?q=${router.query.q}` : '/', undefined, {
-        scroll: false,
-      });
+      selectRepo(null);
     } else {
-      router.push(
-        `/${repository.node_id}${router.query.q ? `?q=${router.query.q}` : ''}`,
-        undefined,
-        { scroll: false }
-      );
+      selectRepo(repository.node_id);
     }
   };
 
@@ -122,7 +121,7 @@ export const SearchResultsListItem: FC<SearchResultsListItemProps> = ({
                           primaryColor={theme?.colors.blue600.value}
                         />
                       }
-                      child={<Text>Stars</Text>}
+                      desc={'Stars'}
                     />
                     <Fact
                       number={repository.forks_count}
@@ -133,14 +132,11 @@ export const SearchResultsListItem: FC<SearchResultsListItemProps> = ({
                           primaryColor={theme?.colors.blue600.value}
                         />
                       }
-                      child={<Text>Forks</Text>}
+                      desc={'Forks'}
                     />
                     {repository.language && (
                       <>
-                        <Fact
-                          number={repository.language}
-                          child={<Text>Language</Text>}
-                        />
+                        <Fact number={repository.language} desc={'Language'} />
                       </>
                     )}
                   </Row>

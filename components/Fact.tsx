@@ -3,7 +3,7 @@ import { FC } from 'react';
 
 interface FactProps {
   number: number | string;
-  child: React.ReactNode;
+  desc: string;
   icon?: React.ReactNode;
 }
 
@@ -27,7 +27,7 @@ const numberFormatter = (num: number, digits = 1): string => {
   return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol;
 };
 
-export const Fact: FC<FactProps> = ({ child, number, icon }) => {
+export const Fact: FC<FactProps> = ({ desc, number, icon }) => {
   const text = (
     <Text
       color="primary"
@@ -63,7 +63,7 @@ export const Fact: FC<FactProps> = ({ child, number, icon }) => {
       )}
 
       <Spacer y={0.2} />
-      <Text size={10}>{child}</Text>
+      <Text size={10}>{desc}</Text>
     </Container>
   );
 };
