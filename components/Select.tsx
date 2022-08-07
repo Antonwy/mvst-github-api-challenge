@@ -1,14 +1,22 @@
-import { Button, Card, CardProps, Grid, useTheme } from '@nextui-org/react';
+import {
+  Button,
+  Card,
+  CardProps,
+  Container,
+  Grid,
+  useTheme,
+} from '@nextui-org/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FC, forwardRef, useState } from 'react';
 import { ChevronDown, Plus } from 'react-iconly';
+import useMediaQuery from '../hooks/mediaquery';
 
 interface SelectProps {
   elements: string[];
   selected: string | null;
   hint?: string;
   onSelect: (element: string | null) => void;
-  maxColums?: number;
+  big?: boolean;
 }
 
 export const Select: FC<SelectProps> = ({
@@ -16,10 +24,11 @@ export const Select: FC<SelectProps> = ({
   selected,
   onSelect,
   hint = 'Select',
-  maxColums = 3,
+  big = false,
 }) => {
   const { theme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
+  const isSmall = useMediaQuery(500);
 
   const transition = {
     ease: 'easeInOut',
@@ -36,7 +45,7 @@ export const Select: FC<SelectProps> = ({
     <>
       <div style={{ position: 'relative' }}>
         <motion.div
-          style={{ cursor: 'pointer', zIndex: 100, position: 'relative' }}
+          style={{ cursor: 'pointer', zIndex: 98, position: 'relative' }}
           transition={transition}
         >
           <motion.div transition={transition}>
@@ -80,45 +89,54 @@ export const Select: FC<SelectProps> = ({
         <AnimatePresence>
           {isOpen && (
             <MotionCard
-              initial={{ opacity: 0 }}
+              initial={{
+                opacity: 0,
+                scale: 0,
+                originY: 'top',
+                originX: 'left',
+              }}
               animate={{
                 opacity: 1,
+                scale: 1,
               }}
-              exit={{ opacity: 0 }}
+              exit={{ opacity: 0, scale: 0 }}
               css={{
                 zIndex: 100,
                 position: 'absolute',
                 top: 'calc(100% + 8px)',
                 p: 12,
                 overflow: 'auto',
-                minWidth: 120 * maxColums,
-                left: `calc(-${(120 * maxColums) / 2}px + 50%)`,
+                width: big ? (isSmall ? '200px' : '300px') : 'auto',
+                maxHeight: 300,
               }}
             >
-              <Grid.Container gap={0.5}>
+              <Container
+                direction="row"
+                display="flex"
+                css={{ p: 0, m: 0, gap: '$4' }}
+              >
                 {elements.map((el) => (
-                  <Grid key={el} xs={12 / maxColums}>
-                    <motion.div
-                      transition={{
-                        layout: { ease: 'easeInOut', type: 'tween' },
-                      }}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
+                  <motion.div
+                    key={el}
+                    transition={{
+                      layout: { ease: 'easeInOut', type: 'tween' },
+                    }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                  >
+                    <Button
+                      auto
+                      flat
+                      color={el === selected ? 'secondary' : 'primary'}
+                      css={{ p: 12 }}
+                      onClick={() => handleElementClick(el)}
                     >
-                      <Button
-                        auto
-                        flat
-                        color={el === selected ? 'secondary' : 'primary'}
-                        css={{ p: 12 }}
-                        onClick={() => handleElementClick(el)}
-                      >
-                        {el}
-                      </Button>
-                    </motion.div>
-                  </Grid>
+                      {el}
+                    </Button>
+                  </motion.div>
                 ))}
-              </Grid.Container>
+              </Container>
             </MotionCard>
           )}
         </AnimatePresence>

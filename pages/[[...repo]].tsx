@@ -98,6 +98,7 @@ const Home: NextPage<HomeProps> = ({ query }) => {
             selected={language}
             onSelect={(e) => setLanguage(e)}
             hint="Filter by language"
+            big
           />
 
           <Spacer x={0.25} />
@@ -107,7 +108,6 @@ const Home: NextPage<HomeProps> = ({ query }) => {
             selected={sortBy}
             onSelect={(e) => setSortBy(e)}
             hint="Sort by"
-            maxColums={1}
           />
         </Row>
 

@@ -1,10 +1,10 @@
 export const languages = [
   'Java',
+  'JavaScript',
   'PHP',
   'Perl',
   'C',
-  'React',
-  'Angula',
+  'Rust',
   'Haskel',
   'C#',
   'Lapis',
