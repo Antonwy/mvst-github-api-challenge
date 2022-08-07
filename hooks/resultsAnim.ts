@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import { GithubAPIState } from './githubApi';
 
 interface ResultsAnimProps {
-  rocketVariant: 'launch' | 'land';
+  h1Variant: 'small' | 'big';
+  h2Variant: 'small' | 'big';
   resultsVariant: 'show' | 'hide';
   showResults: boolean;
 }
@@ -12,6 +13,7 @@ export const resultsVariantObj: Variants = {
   show: {
     opacity: [0, 0, 1],
     height: 'auto',
+    overflow: 'visible',
     transition: {
       duration: 1,
       ease: 'easeOut',
@@ -21,6 +23,7 @@ export const resultsVariantObj: Variants = {
   hide: {
     height: 0,
     opacity: [1, 0, 0],
+    overflow: 'hidden',
     transition: {
       duration: 1,
       ease: 'easeOut',
@@ -29,29 +32,45 @@ export const resultsVariantObj: Variants = {
   },
 };
 
-export const rocketVariantObj: Variants = {
-  launch: {
-    y: -400,
-    x: -400,
+export const h1VariantsObj: Variants = {
+  small: {
+    fontSize: ['84px', '44px', '44px'],
+    lineHeight: ['84px', '44px', '44px'],
     transition: {
-      duration: 2,
-      ease: 'circOut',
+      duration: 1,
+      ease: 'easeOut',
+      times: [0, 0.5, 1],
     },
   },
-  land: {
-    y: 0,
-    x: 0,
+  big: {
+    fontSize: '84px',
+    lineHeight: '84px',
     transition: {
-      duration: 2,
-      ease: 'circOut',
+      duration: 1,
+      ease: 'easeOut',
+      times: [0, 0.5, 1],
     },
   },
-  initial: {
-    height: 400,
-    width: 400,
-    position: 'fixed',
-    top: 0,
-    left: 150,
+};
+
+export const h2VariantsObj: Variants = {
+  small: {
+    fontSize: ['28px', '14px', '14px'],
+    lineHeight: ['34px', '20px', '20px'],
+    transition: {
+      duration: 1,
+      ease: 'easeOut',
+      times: [0, 0.5, 1],
+    },
+  },
+  big: {
+    fontSize: '28px',
+    lineHeight: '34px',
+    transition: {
+      duration: 1,
+      ease: 'easeOut',
+      times: [0, 0.5, 1],
+    },
   },
 };
 
@@ -68,7 +87,8 @@ export const useResultsAnim = (state: GithubAPIState): ResultsAnimProps => {
 
   return {
     resultsVariant: showResults ? 'show' : 'hide',
-    rocketVariant: showResults ? 'launch' : 'land',
+    h1Variant: showResults ? 'small' : 'big',
+    h2Variant: showResults ? 'small' : 'big',
     showResults,
   };
 };

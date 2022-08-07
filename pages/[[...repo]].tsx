@@ -1,21 +1,29 @@
 import type { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
-import { Text, Container, Spacer, Row, Pagination } from '@nextui-org/react';
+import {
+  Text,
+  Container,
+  Spacer,
+  Row,
+  Pagination,
+  useTheme,
+} from '@nextui-org/react';
 import { SearchInput } from '../components/SearchInput';
-import { useGithubSearch } from '../hooks/githubApi';
+import { GithubAPIState, useGithubSearch } from '../hooks/githubApi';
 import { SearchResultsList } from '../components/SearchResultsList';
 import { ToastContainer } from 'react-toastify';
 import {
+  h1VariantsObj,
+  h2VariantsObj,
   resultsVariantObj,
-  rocketVariantObj,
   useResultsAnim,
 } from '../hooks/resultsAnim';
 import { motion } from 'framer-motion';
-import Rocket from '../assets/rocket.png';
-import Image from 'next/image';
 import { Select } from '../components/Select';
 import { languages } from '../models/languages';
 import { sortOptions } from '../models/sortOptions';
+import { NoContent } from '../components/NoContent';
+import ErrorImg from '../assets/error.png';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
@@ -45,7 +53,9 @@ const Home: NextPage<HomeProps> = ({ query }) => {
     totalPages,
     setPage,
   } = useGithubSearch(query);
-  const { resultsVariant, showResults } = useResultsAnim(state);
+  const { resultsVariant, showResults, h1Variant, h2Variant } =
+    useResultsAnim(state);
+  const { theme } = useTheme();
 
   return (
     <>
@@ -54,6 +64,8 @@ const Home: NextPage<HomeProps> = ({ query }) => {
         <meta name="description" content="MVST Github API Challenge" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      {/* first render style bug */}
+      <script>0</script>
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -71,12 +83,33 @@ const Home: NextPage<HomeProps> = ({ query }) => {
         display="flex"
         direction="column"
         wrap="nowrap"
-        css={{ minHeight: '100vh' }}
+        css={{ minHeight: '100vh', p: 0, m: 0 }}
       >
-        <Text h1 css={{ fontSize: '$xl8', color: '$primary' }}>
+        <motion.h1
+          style={{
+            color: theme?.colors.primary.value,
+            margin: 0,
+            padding: 0,
+            marginTop: 20,
+          }}
+          initial="big"
+          variants={h1VariantsObj}
+          animate={h1Variant}
+        >
           MVST
-        </Text>
-        <Text h1>Github Challenge</Text>
+        </motion.h1>
+        <motion.h2
+          style={{
+            color: theme?.colors.gray900.value,
+            margin: 0,
+            padding: 0,
+          }}
+          initial="big"
+          variants={h2VariantsObj}
+          animate={h2Variant}
+        >
+          Github Challenge
+        </motion.h2>
 
         <Spacer />
 
@@ -87,7 +120,7 @@ const Home: NextPage<HomeProps> = ({ query }) => {
             return setQuery('');
           }}
           searchState={state}
-          placeholder="Search repositories"
+          placeholder="Search repositories 🔎"
         />
 
         <Spacer y={0.5} />
@@ -118,23 +151,32 @@ const Home: NextPage<HomeProps> = ({ query }) => {
           variants={resultsVariantObj}
           initial="hide"
         >
-          <SearchResultsList repositories={repositories} />
+          {state === GithubAPIState.error ? (
+            <NoContent
+              image={ErrorImg}
+              message="🚨 An error appeared, try again later! 🚨"
+            />
+          ) : (
+            <SearchResultsList repositories={repositories} />
+          )}
         </motion.div>
 
-        <motion.div
-          animate={{
-            opacity: showResults ? 1 : 0,
-            height: showResults ? 'auto' : 0,
-            transition: { delay: showResults ? 1 : 0 },
-          }}
-        >
-          <Pagination
-            total={totalPages}
-            initialPage={1}
-            page={currentPage}
-            onChange={setPage}
-          />
-        </motion.div>
+        {totalPages > 1 && (
+          <motion.div
+            animate={{
+              opacity: showResults ? 1 : 0,
+              height: showResults ? 'auto' : 0,
+              transition: { delay: showResults ? 1 : 0 },
+            }}
+          >
+            <Pagination
+              total={totalPages}
+              initialPage={1}
+              page={currentPage}
+              onChange={setPage}
+            />
+          </motion.div>
+        )}
 
         <motion.div
           animate={{
@@ -143,7 +185,7 @@ const Home: NextPage<HomeProps> = ({ query }) => {
           }}
         >
           <Text small css={{ textAlign: 'center', color: '$gray700' }}>
-            search through all github repositories.
+            search for all github repositories.
             <br /> Just type in your search prompt!🤘🏼
           </Text>
         </motion.div>

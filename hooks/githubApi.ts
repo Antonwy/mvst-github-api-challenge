@@ -69,9 +69,17 @@ export const useGithubSearch = (
 
       setState(GithubAPIState.success);
       setRepositories(response.data.items);
-      setTotalPages(Math.floor(response.data.total_count / 30));
+
+      const newTotalPages = response.data.total_count / 30;
+
+      if (totalPages !== newTotalPages) {
+        setTotalPages(Math.floor(response.data.total_count / 30));
+        setPage(0);
+      }
     } catch (error) {
       setState(GithubAPIState.error);
+      setRepositories([]);
+      setTotalPages(0);
     }
   };
 

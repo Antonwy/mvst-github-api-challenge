@@ -3,13 +3,12 @@ import { Repository } from '../models/repository';
 import 'react-toastify/dist/ReactToastify.css';
 import Masonry from 'react-masonry-css';
 import { SearchResultsListItem } from './SearchResultsListItem';
-import {
-  AnimatePresence,
-  AnimateSharedLayout,
-  LayoutGroup,
-  motion,
-} from 'framer-motion';
-import { useRouter } from 'next/router';
+import { LayoutGroup } from 'framer-motion';
+
+import Empty from '../assets/empty.png';
+import Image from 'next/image';
+import { Container, Spacer, Text } from '@nextui-org/react';
+import { NoContent } from './NoContent';
 
 interface SearchResultsListProps {
   repositories: Repository[];
@@ -27,6 +26,9 @@ export const SearchResultsList: FC<SearchResultsListProps> = ({
   repositories = [],
 }) => {
   const [selectedRepo, setSelectedRepo] = useState<string | null>(null);
+
+  if (repositories.length === 0)
+    return <NoContent image={Empty} message="No results 😥" />;
 
   return (
     <LayoutGroup>
