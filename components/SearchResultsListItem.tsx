@@ -10,8 +10,7 @@ import {
   useTheme,
 } from '@nextui-org/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useRouter } from 'next/router';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { Star, Swap } from 'react-iconly';
 import { toast } from 'react-toastify';
 import { Repository } from '../models/repository';

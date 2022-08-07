@@ -3,7 +3,6 @@ import {
   Card,
   CardProps,
   Container,
-  Grid,
   useTheme,
 } from '@nextui-org/react';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -12,10 +11,25 @@ import { ChevronDown, Plus } from 'react-iconly';
 import useMediaQuery from '../hooks/mediaquery';
 
 interface SelectProps {
+  /**
+   * Which elements should be selectable?
+   */
   elements: string[];
+  /**
+   * Which element is currently selected?
+   */
   selected: string | null;
+  /**
+   * Hint that should be displayed when no element is selected
+   */
   hint?: string;
+  /**
+   * onSelect handler
+   */
   onSelect: (element: string | null) => void;
+  /**
+   * Should the select popup be big => multiple columns?
+   */
   big?: boolean;
 }
 
@@ -52,6 +66,7 @@ export const Select: FC<SelectProps> = ({
             <Button
               flat
               css={{ px: '$6' }}
+              data-testid="custom-select"
               icon={
                 selected ? (
                   <motion.div
@@ -89,6 +104,7 @@ export const Select: FC<SelectProps> = ({
         <AnimatePresence>
           {isOpen && (
             <MotionCard
+              data-testid="custom-select-popup"
               initial={{
                 opacity: 0,
                 scale: 0,

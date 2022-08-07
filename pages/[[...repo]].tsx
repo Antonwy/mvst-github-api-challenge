@@ -83,7 +83,7 @@ const Home: NextPage<HomeProps> = ({ query }) => {
         display="flex"
         direction="column"
         wrap="nowrap"
-        css={{ minHeight: '100vh', p: 0, m: 0 }}
+        css={{ minHeight: '100vh', p: 0, m: 0, maxWidth: 'unset' }}
       >
         <motion.h1
           style={{
