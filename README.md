@@ -4,8 +4,8 @@ This repo is a sample Github Search API integration with NextJS/ReactJS.
 
 ## TODO
 
-- [ ] Select filter view not responsive
-- [ ] Pagination bugfixes => new query should reset the pagination
+- [x] Select filter view not responsive
+- [x] Pagination bugfixes => new query should reset the pagination
 - [ ] Implement tests
 - [ ] Improve storybook integration
 - [ ] Finish README
