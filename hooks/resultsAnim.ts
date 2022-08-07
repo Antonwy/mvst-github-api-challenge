@@ -13,7 +13,6 @@ export const resultsVariantObj: Variants = {
   show: {
     opacity: [0, 0, 1],
     height: 'auto',
-    overflow: 'visible',
     transition: {
       duration: 1,
       ease: 'easeOut',
@@ -23,7 +22,6 @@ export const resultsVariantObj: Variants = {
   hide: {
     height: 0,
     opacity: [1, 0, 0],
-    overflow: 'hidden',
     transition: {
       duration: 1,
       ease: 'easeOut',

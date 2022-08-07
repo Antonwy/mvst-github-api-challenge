@@ -150,6 +150,7 @@ const Home: NextPage<HomeProps> = ({ query }) => {
           animate={resultsVariant}
           variants={resultsVariantObj}
           initial="hide"
+          style={{ overflow: showResults ? 'visible' : 'hidden' }}
         >
           {state === GithubAPIState.error ? (
             <NoContent
