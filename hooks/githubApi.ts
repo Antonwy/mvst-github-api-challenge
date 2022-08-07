@@ -9,10 +9,10 @@ import { sortOptions } from '../models/sortOptions';
 axios.defaults.baseURL = 'https://api.github.com';
 
 export enum GithubAPIState {
-  idle,
-  loading,
-  success,
-  error,
+  idle = 'idle',
+  loading = 'loading',
+  success = 'success',
+  error = 'error',
 }
 
 interface UseGithubSearchReturnInterface {

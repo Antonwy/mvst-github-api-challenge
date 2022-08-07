@@ -12,14 +12,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ChangeEvent, FC, useState } from 'react';
 import { CloseSquare } from 'react-iconly';
 import { GithubAPIState } from '../hooks/githubApi';
-import { languages } from '../models/languages';
-import { Select } from './Select';
 
 interface SearchInputProps {
-  /**
-   * Is this the principal call to action on the page?
-   */
-  primary?: boolean;
   /**
    * What background color to use
    */
@@ -87,6 +81,7 @@ export const SearchInput: FC<SearchInputProps> = ({
         placeholder={placeholder}
         onChange={handleSearchChange}
         contentRightStyling={false}
+        data-testid="search-input"
         contentRight={
           <Container
             alignItems="center"
@@ -99,13 +94,17 @@ export const SearchInput: FC<SearchInputProps> = ({
             <motion.div
               layout
               onClick={clearSearchHandler}
+              data-testid="clear-search"
               className="clickable"
-              style={{ marginRight: 8, height: 20 }}
+              style={{
+                marginRight: 8,
+                height: 20,
+                pointerEvents: query ? 'all' : 'none',
+              }}
               whileHover={{ scale: 1.1 }}
               animate={{
                 opacity: query ? 1 : 0,
                 scale: query ? 1 : 0.8,
-                pointerEvents: query ? 'all' : 'none',
               }}
             >
               <CloseSquare
