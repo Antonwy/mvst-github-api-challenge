@@ -58,7 +58,7 @@ const Home: NextPage<HomeProps> = ({ query }) => {
   const { theme } = useTheme();
 
   return (
-    <>
+    <div className="centered">
       <Head>
         <title>MVST Github Search</title>
         <meta name="description" content="MVST Github API Challenge" />
@@ -205,7 +205,7 @@ const Home: NextPage<HomeProps> = ({ query }) => {
           />
         </motion.div> */}
       </Container>
-    </>
+    </div>
   );
 };
 
