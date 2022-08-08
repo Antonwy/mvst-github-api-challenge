@@ -4,14 +4,20 @@ import 'react-toastify/dist/ReactToastify.css';
 import Masonry from 'react-masonry-css';
 import { SearchResultsListItem } from './SearchResultsListItem';
 import { LayoutGroup } from 'framer-motion';
-
-import Empty from '../assets/empty.png';
-import Image from 'next/image';
-import { Container, Spacer, Text } from '@nextui-org/react';
+import Empty from '../public/assets/empty.png';
 import { NoContent } from './NoContent';
+import { GithubAPIState } from '../hooks/githubApi';
 
 interface SearchResultsListProps {
+  /**
+   * repositories to display
+   */
   repositories: Repository[];
+
+  /**
+   * state of the github api to determine if we need to show the empty state
+   */
+  state: GithubAPIState;
 }
 
 const breakpointColumnsObj = {
@@ -24,10 +30,11 @@ const breakpointColumnsObj = {
 
 export const SearchResultsList: FC<SearchResultsListProps> = ({
   repositories = [],
+  state,
 }) => {
   const [selectedRepo, setSelectedRepo] = useState<string | null>(null);
 
-  if (repositories.length === 0)
+  if (repositories.length === 0 && state === GithubAPIState.success)
     return <NoContent image={Empty} message="No results 😥" />;
 
   return (

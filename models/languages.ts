@@ -1,3 +1,4 @@
+// possible programming languages for the search filter
 export const languages = [
   'Java',
   'JavaScript',

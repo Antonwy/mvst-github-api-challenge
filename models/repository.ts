@@ -129,6 +129,7 @@ export enum Visibility {
   Public = 'public',
 }
 
+// mock repo for storybook
 export const mockRepo = JSON.parse(`{
   "id": 10270250,
   "node_id": "MDEwOlJlcG9zaXRvcnkxMDI3MDI1MA==",
@@ -241,4 +242,4 @@ export const mockRepo = JSON.parse(`{
   "watchers": 192821,
   "default_branch": "main",
   "score": 1
-},`) as Repository;
+}`) as Repository;

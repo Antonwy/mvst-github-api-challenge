@@ -2,6 +2,7 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { userEvent, within } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
 import { Select } from '../../components/Select';
+import { sleep } from '../helpers/sleep';
 
 export default {
   title: 'Components/Select',
@@ -29,11 +30,15 @@ Default.play = async ({ canvasElement }) => {
 
   userEvent.click(customSelect);
 
+  await sleep(1000);
+
   const customSelectPopup = await canvas.findByTestId('custom-select-popup');
 
-  expect(customSelectPopup).toBeDefined();
+  expect(customSelectPopup).toBeVisible();
 
   userEvent.click(customSelect);
+
+  await sleep(1000);
 
   expect(customSelectPopup).not.toBeVisible();
 };

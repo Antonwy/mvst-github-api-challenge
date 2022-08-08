@@ -7,6 +7,12 @@ interface FactProps {
   icon?: React.ReactNode;
 }
 
+/**
+ * number formatter that shortens large numbers to a shorter form
+ * @param num
+ * @param digits
+ * @returns shortend number
+ */
 const numberFormatter = (num: number, digits = 1): string => {
   const si = [
     { value: 1, symbol: '' },

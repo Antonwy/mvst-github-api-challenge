@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
 
+/**
+ * simple hook to check if the window is smaller than width
+ * @param width the mediaquery witdh
+ * @returns if smaller than the width
+ */
 const useMediaQuery = (width: number): boolean => {
   const query = `(max-width: ${width}px)`;
 

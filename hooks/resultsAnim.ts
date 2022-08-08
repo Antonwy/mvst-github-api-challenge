@@ -9,6 +9,9 @@ interface ResultsAnimProps {
   showResults: boolean;
 }
 
+/**
+ * Framer motion variants for the results animation should show if the search query is not empty
+ */
 export const resultsVariantObj: Variants = {
   show: {
     opacity: [0, 0, 1],
@@ -30,6 +33,9 @@ export const resultsVariantObj: Variants = {
   },
 };
 
+/**
+ * Framer motion variants for the h1 animation should be small if the search query is not empty
+ */
 export const h1VariantsObj: Variants = {
   small: {
     fontSize: ['84px', '44px', '44px'],
@@ -44,6 +50,7 @@ export const h1VariantsObj: Variants = {
     fontSize: '84px',
     lineHeight: '84px',
     transition: {
+      delay: 0.25,
       duration: 1,
       ease: 'easeOut',
       times: [0, 0.5, 1],
@@ -51,6 +58,9 @@ export const h1VariantsObj: Variants = {
   },
 };
 
+/**
+ * Framer motion variants for the h2 animation should be small if the search query is not empty
+ */
 export const h2VariantsObj: Variants = {
   small: {
     fontSize: ['28px', '14px', '14px'],
@@ -66,12 +76,18 @@ export const h2VariantsObj: Variants = {
     lineHeight: '34px',
     transition: {
       duration: 1,
+      delay: 0.25,
       ease: 'easeOut',
       times: [0, 0.5, 1],
     },
   },
 };
 
+/**
+ * Custom hook that manages all the animations that are shown when the search query changes
+ * @param state state of the github api
+ * @returns animation variants and if the results should be shown
+ */
 export const useResultsAnim = (state: GithubAPIState): ResultsAnimProps => {
   const [showResults, setShowResults] = useState(false);
 

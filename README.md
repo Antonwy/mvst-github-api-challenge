@@ -2,14 +2,13 @@
 
 This repo is a sample Github Search API integration with NextJS/ReactJS.
 
-## TODO
+Checkout [Github Search on Vercel](mvst-github-api-challenge.vercel.app) to try my implementation.
 
-- [x] Select filter view not responsive
-- [x] Pagination bugfixes => new query should reset the pagination
-- [ ] Implement tests
-- [ ] Implement dark mode
-- [ ] Improve storybook integration
-- [ ] Finish README
+- ✅ React with Typescript
+- ✅ Storybook integration
+- ✅ Deployed at [Vercel](mvst-github-api-challenge.vercel.app) -> best place to host NextJS :)
+- ✅ Documented code
+- ✅ Tests integrated in storybook
 
 ## Run Locally
 
@@ -46,17 +45,26 @@ Start the Storybook server
 Run Tests
 
 ```bash
-  TOOD
+  npm run test-storybook
 ```
 
 ## Lessons Learned
 
-- Storybook
+- Learned Storybook
+- NextUI is probably not production ready :)
+- Framer motion needs much time for performance improvements
 
 ## Future Improvements
 
-- TODO
+- Framer motion performance Improvements
+- Little bug fixes
+- Improve Safari performance and bugs
 
 ## MVST Exercise Feedback
 
-TODO
+Task description was partially unclear.  
+For me it wasn't clear, if I should create a repo search for repos of one user or for all repositories on github.  
+Also regarding the expected UI design I wasn't sure if I need to create a mocked github account like in the video or just the search functionality like I did it.  
+And what means: "GitHub repositories are basically just a glorified list" ??
+
+But in general, I liked the task very much because it was very open and you could show a wide range of your skills by using different plugins etc.

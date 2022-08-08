@@ -99,8 +99,9 @@ export const SearchInput: FC<SearchInputProps> = ({
               style={{
                 marginRight: 8,
                 height: 20,
-                pointerEvents: query ? 'all' : 'none',
+                pointerEvents: query.length > 0 ? 'all' : 'none',
               }}
+              initial={{ opacity: 0, scale: 0 }}
               whileHover={{ scale: 1.1 }}
               animate={{
                 opacity: query ? 1 : 0,

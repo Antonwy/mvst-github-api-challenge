@@ -23,9 +23,10 @@ import { Select } from '../components/Select';
 import { languages } from '../models/languages';
 import { sortOptions } from '../models/sortOptions';
 import { NoContent } from '../components/NoContent';
-import ErrorImg from '../assets/error.png';
+import ErrorImg from '../public/assets/error.png';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  // directly extract the initial query from the url on server side
   return {
     props: {
       query:
@@ -53,9 +54,13 @@ const Home: NextPage<HomeProps> = ({ query }) => {
     totalPages,
     setPage,
   } = useGithubSearch(query);
+
   const { resultsVariant, showResults, h1Variant, h2Variant } =
     useResultsAnim(state);
+
   const { theme } = useTheme();
+
+  const showPagingation = showResults && totalPages > 1;
 
   return (
     <div className="centered">
@@ -64,8 +69,6 @@ const Home: NextPage<HomeProps> = ({ query }) => {
         <meta name="description" content="MVST Github API Challenge" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {/* first render style bug */}
-      <script>0</script>
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -83,7 +86,7 @@ const Home: NextPage<HomeProps> = ({ query }) => {
         display="flex"
         direction="column"
         wrap="nowrap"
-        css={{ minHeight: '100vh', p: 0, m: 0, maxWidth: 'unset' }}
+        css={{ minHeight: '100vh', p: 0, m: 0 }}
       >
         <motion.h1
           style={{
@@ -150,7 +153,7 @@ const Home: NextPage<HomeProps> = ({ query }) => {
           animate={resultsVariant}
           variants={resultsVariantObj}
           initial="hide"
-          style={{ overflow: showResults ? 'visible' : 'clipg' }}
+          style={{ overflow: showResults ? 'visible' : 'clip' }}
         >
           {state === GithubAPIState.error ? (
             <NoContent
@@ -158,28 +161,28 @@ const Home: NextPage<HomeProps> = ({ query }) => {
               message="🚨 An error appeared, try again later! 🚨"
             />
           ) : (
-            <SearchResultsList repositories={repositories} />
+            <SearchResultsList state={state} repositories={repositories} />
           )}
         </motion.div>
 
-        {totalPages > 1 && (
-          <motion.div
-            animate={{
-              opacity: showResults ? 1 : 0,
-              height: showResults ? 'auto' : 0,
-              transition: { delay: showResults ? 1 : 0 },
-            }}
-          >
-            <Pagination
-              total={totalPages}
-              initialPage={1}
-              page={currentPage}
-              onChange={setPage}
-            />
-          </motion.div>
-        )}
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{
+            opacity: showPagingation ? 1 : 0,
+            height: showPagingation ? 'auto' : 0,
+            transition: { delay: showPagingation ? 1 : 0 },
+          }}
+        >
+          <Pagination
+            total={totalPages}
+            initialPage={1}
+            page={currentPage}
+            onChange={setPage}
+          />
+        </motion.div>
 
         <motion.div
+          initial={{ opacity: 1 }}
           animate={{
             opacity: showResults ? 0 : 1,
             transition: { delay: showResults ? 0 : 1 },
@@ -190,20 +193,6 @@ const Home: NextPage<HomeProps> = ({ query }) => {
             <br /> Just type in your search prompt!🤘🏼
           </Text>
         </motion.div>
-
-        {/* <motion.div
-          variants={rocketVariantObj}
-          animate={rocketVariant}
-          initial="initial"
-        >
-          <Image
-            height={400}
-            width={400}
-            layout="responsive"
-            src={Rocket}
-            alt="Rocket"
-          />
-        </motion.div> */}
       </Container>
     </div>
   );

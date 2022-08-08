@@ -18,8 +18,19 @@ import { Fact } from './Fact';
 import { Tag } from './Tag';
 
 interface SearchResultsListItemProps {
+  /**
+   * The repository to display
+   */
   repository: Repository;
+
+  /**
+   *  Notify the parent that the repo was selected => deselect the others
+   */
   selectRepo: (repo: string | null) => void;
+
+  /**
+   * the currently selected repo => the string is the node_id of the repository
+   */
   selectedRepo: string | null;
 }
 

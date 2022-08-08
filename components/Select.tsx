@@ -41,7 +41,9 @@ export const Select: FC<SelectProps> = ({
   big = false,
 }) => {
   const { theme } = useTheme();
+
   const [isOpen, setIsOpen] = useState(false);
+  
   const isSmall = useMediaQuery(500);
 
   const transition = {
@@ -57,6 +59,7 @@ export const Select: FC<SelectProps> = ({
 
   return (
     <>
+      {/* position needs to be relate so that the popup can have absolute position */}
       <div style={{ position: 'relative' }}>
         <motion.div
           style={{ cursor: 'pointer', zIndex: 98, position: 'relative' }}
@@ -156,6 +159,7 @@ export const Select: FC<SelectProps> = ({
             </MotionCard>
           )}
         </AnimatePresence>
+        {/* background needs to be clickable */}
       </div>
       {isOpen && (
         <div
