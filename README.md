@@ -2,11 +2,11 @@
 
 This repo is a sample Github Search API integration with NextJS/ReactJS.
 
-Checkout [Github Search on Vercel](mvst-github-api-challenge.vercel.app) to try my implementation.
+Checkout [Github Search on Vercel](https://mvst-github-api-challenge.vercel.app) to try my implementation.
 
 - ✅ React with Typescript
 - ✅ Storybook integration
-- ✅ Deployed at [Vercel](mvst-github-api-challenge.vercel.app) -> best place to host NextJS :)
+- ✅ Deployed at [Vercel](https://mvst-github-api-challenge.vercel.app) -> best place to host NextJS :)
 - ✅ Documented code
 - ✅ Tests integrated in storybook
 
